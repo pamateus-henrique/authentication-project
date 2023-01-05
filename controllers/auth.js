@@ -1,6 +1,9 @@
 const User = require('../models/User');
 const {StatusCodes} = require('http-status-codes');
 const {BadResquestError} = require('../errors');
+const bcrypt = require('bcryptjs');
+
+
 
 const register = async (req,res) => {
 

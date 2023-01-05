@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -19,9 +20,18 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please provide password'],
-        minlength: 8,
-        maxlength: 50,
+        minlength: 8
     }
 });
+
+//middleware, is this case "this" points to the document itself
+
+UserSchema.pre('save', async function(){
+    
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+
+})
 
 module.exports = mongoose.model('User', UserSchema);
