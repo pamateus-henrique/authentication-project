@@ -23,6 +23,12 @@ const login = async (req,res) => {
         throw new UnauthenticatedError('the user does not exists');
     }
 
+    const isMatch = await user.comparePassword(req.body.password);
+    
+    if(!isMatch){
+        throw new UnauthenticatedError('invalid password or user');
+    }
+
     const token = user.generateToken();
 
     res.status(StatusCodes.OK).json({user : user.name, token});
