@@ -1,3 +1,7 @@
+const Job = require('../models/Job');
+const jwt = require('jsonwebtoken');
+const {BadRequestError} = require('../errors');
+const { StatusCodes } = require('http-status-codes');
 const getAllJobs = async (req,res) => {
     res.send('getAllJobs');
 }
@@ -7,7 +11,21 @@ const getJob = async (req,res) => {
 }
 
 const createJob = async (req,res) => {
-    res.send('create a job');
+
+    const {company, position} = req.body;
+    const createdBy = req.user.userId;
+    if(!company || !position){
+        throw new BadRequestError('please provide all information');
+    }
+
+    const job = await Job.create({company, position, createdBy});
+    console.log(job);
+    res.status(StatusCodes.CREATED).json({ job });
+
+
+    // req.body.createdBy = req.user.userId;
+    // const job = await Job.create({...req.body});
+    // res.status(StatusCodes.CREATED).json({job});
 }
 
 const updateJob = async (req,res) => {
