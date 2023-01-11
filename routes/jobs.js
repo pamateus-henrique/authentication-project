@@ -10,7 +10,7 @@ router.post('/', createJob);
 
 router.get('/:id', getJob);
 
-router.patch('/id', updateJob);
+router.patch('/:id', updateJob);
 
 router.delete('/:id', deleteJob);
 
